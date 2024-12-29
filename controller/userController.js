@@ -21,6 +21,9 @@ const userCreate = async (req, res) => {
 
     try {
         const createuser = await userModel.create(newUser);
+        if (!createuser) {
+            res.json({ status: 0, message: "Error while User Creting" });
+        }
         res.json({ status: 1, message: "User created successfully!" });
     } catch (error) {
         console.error("Error creating user:", error);
@@ -79,7 +82,7 @@ const forgotpassword = async (req, res) => {
         // Send OTP via email (mocked for now)
         const subject = 'OTP verification for password reset';
         const content = `Your OTP is ${otp}. This OTP is valid for 5 minutes.`;
-        console.log(`Email sent to ${mobile}: ${content}`); // Replace with email sending logic
+        console.log(`${subject}Email sent to ${mobile}: ${content}`); // Replace with email sending logic
 
         res.json({ status: 1, message: `OTP sent successfully to ${mobile} ${otp}` });
     } catch (error) {
@@ -155,8 +158,9 @@ const resetpassword = async (req, res) => {
     }
 };
 
+// error not using await
 const logout = async (req, res) => {
-    res.json({status:1,message:'Logout succesful!'})
+    res.json({ status: 1, message: 'Logout succesful!' })
 }
 
-module.exports = { userCreate, login, forgotpassword, verifyotp, resetpassword,logout };
+module.exports = { userCreate, login, forgotpassword, verifyotp, resetpassword, logout };
